@@ -66,13 +66,14 @@ class _FormPageState extends State<FormPage> {
                     padding: const EdgeInsets.all(16),
                     child: TextField(
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(),
+                        errorText: _viewModel.emailError,
+                        border: const OutlineInputBorder(),
                         labelText: 'Your email*',
-                        errorStyle: TextStyle(
+                        errorStyle: const TextStyle(
                           color: Colors.red,
                         ),
                       ),
-                      onChanged: (value) {}, //TODO: call function
+                      onChanged: _viewModel.onEmailChanged,
                     ),
                   ),
                 ),
@@ -87,8 +88,8 @@ class _FormPageState extends State<FormPage> {
                         Row(
                           children: [
                             Checkbox(
-                              value: false, //TODO: change to VM value
-                              onChanged: (value) {}, //TODO: call function
+                              value: _viewModel.acceptedTerms,
+                              onChanged: _viewModel.onTermsChanged,
                             ),
                             const Expanded(
                               child: Text(
@@ -97,14 +98,14 @@ class _FormPageState extends State<FormPage> {
                             )
                           ],
                         ),
-                        if (true) //TODO: Change to checkbox error validation
+                        if (_viewModel.acceptedTermsError != null)
                           Padding(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 12,
                               vertical: 8,
                             ),
                             child: Text(
-                              '', //TODO: Add checkbox error here
+                              _viewModel.acceptedTermsError!,
                               style: const TextStyle(
                                 fontSize: 12,
                                 color: Colors.red,
@@ -115,33 +116,33 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ),
                 ),
-                // TODO: add condition to show results
-                SliverToBoxAdapter(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFBDE7EF),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    margin: const EdgeInsets.all(24.0),
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          'Form results',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                if (_viewModel.showSuccessInfo)
+                  SliverToBoxAdapter(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFBDE7EF),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      margin: const EdgeInsets.all(24.0),
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const Text(
+                            'Form results',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 20),
-                        Text('Email: '),
-                        SizedBox(height: 14),
-                        Text('Accepted terms: '),
-                        SizedBox(height: 14),
-                      ],
+                          const SizedBox(height: 20),
+                          Text('Email: ${_viewModel.email}'),
+                          const SizedBox(height: 14),
+                          Text('Accepted terms: ${_viewModel.acceptedTerms}'),
+                          const SizedBox(height: 14),
+                        ],
+                      ),
                     ),
                   ),
-                ),
                 SliverFillRemaining(
                   hasScrollBody: false,
                   child: Container(
@@ -149,7 +150,8 @@ class _FormPageState extends State<FormPage> {
                     padding: const EdgeInsets.only(left: 20, right: 20, bottom: 40),
                     alignment: Alignment.bottomCenter,
                     child: ElevatedButton(
-                      onPressed: () {}, //TODO: add submitForm callback
+                      onPressed:
+                          _viewModel.isFormValid ? _viewModel.submitForm : null,
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4.0),
