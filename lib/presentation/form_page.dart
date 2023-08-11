@@ -16,6 +16,7 @@ class _FormPageState extends State<FormPage> {
   @override
   void initState() {
     _viewModel = FormPageViewModel();
+    _viewModel.onViewReady();
     super.initState();
   }
 
@@ -66,14 +67,15 @@ class _FormPageState extends State<FormPage> {
                     padding: const EdgeInsets.all(16),
                     child: TextField(
                       decoration: InputDecoration(
-                        errorText: _viewModel.emailError,
+                        errorText: _viewModel.getFieldErrorMessage('email'),
                         border: const OutlineInputBorder(),
                         labelText: 'Your email*',
                         errorStyle: const TextStyle(
                           color: Colors.red,
                         ),
                       ),
-                      onChanged: _viewModel.onEmailChanged,
+                      onChanged: (value) =>
+                          _viewModel.updateAndValidateField(value, 'email'),
                     ),
                   ),
                 ),
@@ -88,8 +90,10 @@ class _FormPageState extends State<FormPage> {
                         Row(
                           children: [
                             Checkbox(
-                              value: _viewModel.acceptedTerms,
-                              onChanged: _viewModel.onTermsChanged,
+                              value: _viewModel.getFieldValue('acceptedTerms'),
+                              onChanged: (value) =>
+                                  _viewModel.updateAndValidateField(
+                                      value, 'acceptedTerms'),
                             ),
                             const Expanded(
                               child: Text(
@@ -98,14 +102,15 @@ class _FormPageState extends State<FormPage> {
                             )
                           ],
                         ),
-                        if (_viewModel.acceptedTermsError != null)
+                        if (_viewModel.getFieldErrorMessage('acceptedTerms') !=
+                            null)
                           Padding(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 12,
                               vertical: 8,
                             ),
                             child: Text(
-                              _viewModel.acceptedTermsError!,
+                              _viewModel.getFieldErrorMessage('acceptedTerms')!,
                               style: const TextStyle(
                                 fontSize: 12,
                                 color: Colors.red,
@@ -135,9 +140,12 @@ class _FormPageState extends State<FormPage> {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          Text('Email: ${_viewModel.email}'),
+                          Text('Email: ${_viewModel.getFieldValue('email')}'),
                           const SizedBox(height: 14),
-                          Text('Accepted terms: ${_viewModel.acceptedTerms}'),
+                          Text(
+                            'Accepted terms: '
+                            '${_viewModel.getFieldValue('acceptedTerms')}',
+                          ),
                           const SizedBox(height: 14),
                         ],
                       ),
