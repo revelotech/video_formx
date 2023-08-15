@@ -1,5 +1,5 @@
 # FormX Video Repository
-Welcome to the official repository for the [FormX tutorial video](https://youtu.be/VideoUrl)!
+Welcome to the official repository for the [FormX tutorial video](https://www.youtube.com/watch?v=7AAN0RCmKn0)!
 This repository is designed to provide you with a comprehensive reference for the code demonstrated in our video about how to implement a form with FormX.
 
 ## About the Tutorial
